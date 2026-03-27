@@ -5,6 +5,16 @@ A Go implementation of the DeerFlow backend - a full-stack "super agent harness"
 - **Eino** - Agent framework  
 - **Viper** - Configuration management
 
+This project is a Go rewrite of the [deer-flow](https://github.com/bytedance/deer-flow) Python backend, providing:
+- Full API compatibility with the existing frontend
+- LangGraph-compatible API endpoints
+- High-performance streaming responses
+
+## Prerequisites
+
+- **Go 1.22+** - Install from [golang.org](https://golang.org/dl/)
+- **Make** - Usually pre-installed on Linux/macOS
+
 ## Project Structure
 
 ```
