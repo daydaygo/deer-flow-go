@@ -1,4 +1,4 @@
-.PHONY: build run test clean fmt lint vet
+.PHONY: build run test test-api clean fmt lint vet
 
 build:
 	go build -o bin/server ./cmd/server
@@ -8,6 +8,9 @@ run:
 
 test:
 	go test -race ./... -v
+
+test-api:
+	@./test-api.sh
 
 fmt:
 	go fmt ./...
