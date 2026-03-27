@@ -3,7 +3,9 @@ package handler
 import (
 	"net/http"
 
+	"github.com/user/deer-flow-go/internal/agent"
 	"github.com/user/deer-flow-go/internal/config"
+	"github.com/user/deer-flow-go/internal/llm"
 	"github.com/user/deer-flow-go/internal/store"
 )
 
@@ -15,12 +17,16 @@ type Router struct {
 	runs        *RunsHandler
 	threadState *ThreadStateHandler
 	runsJoin    *RunsJoinHandler
+	runsStream  *RunsStreamHandler
 }
 
 func NewRouter(cfg *config.Config) *Router {
 	memoryStore := store.NewMemoryStore(cfg.Memory.StoragePath)
 	threadStore := store.NewThreadStore(cfg.Storage.DataDir)
 	runStore := store.NewRunStore(cfg.Storage.DataDir)
+
+	llmFactory := llm.NewFactory(cfg)
+	engine := agent.NewEngine(cfg, llmFactory)
 
 	return &Router{
 		health:      NewHealthHandler(),
@@ -30,6 +36,7 @@ func NewRouter(cfg *config.Config) *Router {
 		runs:        NewRunsHandler(runStore),
 		threadState: NewThreadStateHandler(threadStore, runStore),
 		runsJoin:    NewRunsJoinHandler(runStore),
+		runsStream:  NewRunsStreamHandler(runStore, engine),
 	}
 }
 
@@ -50,4 +57,6 @@ func (r *Router) Register(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/langgraph/threads/{id}/state", r.threadState.Get)
 
 	mux.HandleFunc("POST /api/langgraph/threads/{id}/runs/{run_id}/join", r.runsJoin.Join)
+
+	mux.HandleFunc("POST /api/langgraph/threads/{id}/runs/stream", r.runsStream.Stream)
 }
