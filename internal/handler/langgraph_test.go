@@ -104,8 +104,16 @@ func TestThreadsHandler_Delete(t *testing.T) {
 
 	handler.Delete(rec, req)
 
-	if rec.Code != http.StatusNoContent {
-		t.Errorf("expected status %d, got %d", http.StatusNoContent, rec.Code)
+	if rec.Code != http.StatusOK {
+		t.Errorf("expected status %d, got %d", http.StatusOK, rec.Code)
+	}
+
+	var resp map[string]bool
+	if err := json.Unmarshal(rec.Body.Bytes(), &resp); err != nil {
+		t.Errorf("failed to unmarshal response: %v", err)
+	}
+	if !resp["deleted"] {
+		t.Errorf("expected deleted=true, got %v", resp)
 	}
 
 	_, err = handler.threadStore.Get(thread.ThreadID)
@@ -168,8 +176,8 @@ func TestRouter_ThreadEndpoints(t *testing.T) {
 	delRec := httptest.NewRecorder()
 	mux.ServeHTTP(delRec, delReq)
 
-	if delRec.Code != http.StatusNoContent {
-		t.Errorf("expected status %d, got %d", http.StatusNoContent, delRec.Code)
+	if delRec.Code != http.StatusOK {
+		t.Errorf("expected status %d, got %d", http.StatusOK, delRec.Code)
 	}
 }
 
