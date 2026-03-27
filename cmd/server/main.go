@@ -13,7 +13,7 @@ func main() {
 	configPath := getConfigPath()
 	cfg := config.MustLoad(configPath)
 
-	router := handler.NewRouter()
+	router := handler.NewRouter(cfg)
 	mux := http.NewServeMux()
 	router.Register(mux)
 
