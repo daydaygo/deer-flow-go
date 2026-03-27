@@ -47,5 +47,13 @@ type StorageConfig struct {
 }
 
 type ChannelsConfig struct {
-	Enabled []string `mapstructure:"enabled"`
+	Enabled  bool                     `mapstructure:"enabled"`
+	Channels map[string]ChannelConfig `mapstructure:"channels"`
+}
+
+type ChannelConfig struct {
+	Enabled      bool     `mapstructure:"enabled"`
+	BotToken     string   `mapstructure:"bot_token"`
+	AppToken     string   `mapstructure:"app_token"`
+	AllowedUsers []string `mapstructure:"allowed_users"`
 }
