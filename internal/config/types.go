@@ -1,10 +1,22 @@
 package config
 
 type Config struct {
-	Server  ServerConfig  `mapstructure:"server"`
-	Models  []ModelConfig `mapstructure:"models"`
-	Memory  MemoryConfig  `mapstructure:"memory"`
-	Storage StorageConfig `mapstructure:"storage"`
+	Server   ServerConfig               `mapstructure:"server"`
+	Models   []ModelConfig              `mapstructure:"models"`
+	Memory   MemoryConfig               `mapstructure:"memory"`
+	Storage  StorageConfig              `mapstructure:"storage"`
+	Channels ChannelsConfig             `mapstructure:"channels"`
+	MCP      map[string]MCPServerConfig `mapstructure:"mcp"`
+}
+
+type MCPServerConfig struct {
+	Enabled bool              `mapstructure:"enabled"`
+	Type    string            `mapstructure:"type"`
+	Command string            `mapstructure:"command"`
+	Args    []string          `mapstructure:"args"`
+	URL     string            `mapstructure:"url"`
+	Env     map[string]string `mapstructure:"env"`
+	Headers map[string]string `mapstructure:"headers"`
 }
 
 type ServerConfig struct {
@@ -32,4 +44,8 @@ type MemoryConfig struct {
 
 type StorageConfig struct {
 	DataDir string `mapstructure:"data_dir"`
+}
+
+type ChannelsConfig struct {
+	Enabled []string `mapstructure:"enabled"`
 }

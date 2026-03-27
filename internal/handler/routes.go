@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/user/deer-flow-go/internal/agent"
 	"github.com/user/deer-flow-go/internal/config"
 	"github.com/user/deer-flow-go/internal/llm"
+	"github.com/user/deer-flow-go/internal/skills"
 	"github.com/user/deer-flow-go/internal/store"
 )
 
@@ -18,6 +20,7 @@ type Router struct {
 	threadState *ThreadStateHandler
 	runsJoin    *RunsJoinHandler
 	runsStream  *RunsStreamHandler
+	skills      *SkillsHandler
 }
 
 func NewRouter(cfg *config.Config) *Router {
@@ -28,6 +31,11 @@ func NewRouter(cfg *config.Config) *Router {
 	llmFactory := llm.NewFactory(cfg)
 	engine := agent.NewEngine(cfg, llmFactory)
 
+	skillsLoader := skills.NewLoader("skills", "extensions_config.json")
+	if err := skillsLoader.Load(); err != nil {
+		panic(fmt.Sprintf("failed to load skills: %v", err))
+	}
+
 	return &Router{
 		health:      NewHealthHandler(),
 		models:      NewModelsHandler(cfg),
@@ -37,6 +45,7 @@ func NewRouter(cfg *config.Config) *Router {
 		threadState: NewThreadStateHandler(threadStore, runStore),
 		runsJoin:    NewRunsJoinHandler(runStore),
 		runsStream:  NewRunsStreamHandler(runStore, engine),
+		skills:      NewSkillsHandler(skillsLoader),
 	}
 }
 
@@ -59,4 +68,8 @@ func (r *Router) Register(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/langgraph/threads/{id}/runs/{run_id}/join", r.runsJoin.Join)
 
 	mux.HandleFunc("POST /api/langgraph/threads/{id}/runs/stream", r.runsStream.Stream)
+
+	mux.HandleFunc("GET /api/skills", r.skills.List)
+	mux.HandleFunc("GET /api/skills/{name}", r.skills.Get)
+	mux.HandleFunc("PUT /api/skills/{name}", r.skills.Update)
 }
