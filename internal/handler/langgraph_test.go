@@ -139,7 +139,7 @@ func TestRouter_ThreadEndpoints(t *testing.T) {
 	cfg := &config.Config{
 		Storage: config.StorageConfig{DataDir: tmpDir},
 	}
-	router := NewRouter(cfg)
+	router := NewRouter(cfg, "config.yaml")
 
 	mux := http.NewServeMux()
 	router.Register(mux)
