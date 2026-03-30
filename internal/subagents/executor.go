@@ -186,8 +186,10 @@ func (e *Executor) Shutdown() {
 	e.wg.Wait()
 }
 
-var globalExecutor *Executor
-var executorOnce sync.Once
+var (
+	globalExecutor *Executor
+	executorOnce   sync.Once
+)
 
 func GetExecutor() *Executor {
 	executorOnce.Do(func() {

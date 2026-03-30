@@ -314,7 +314,7 @@ func TestMCPHandlerCallToolNonexistentServer(t *testing.T) {
 
 	handler := NewMCPHandler(configPath)
 
-	args := map[string]interface{}{"param": "value"}
+	args := map[string]any{"param": "value"}
 	body, _ := json.Marshal(args)
 
 	req := httptest.NewRequest(http.MethodPost, "/api/mcp/servers/nonexistent/tools/test-tool", bytes.NewReader(body))

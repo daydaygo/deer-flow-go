@@ -39,7 +39,7 @@ func (s *ThreadStore) Create() (*model.Thread, error) {
 	}
 
 	threadDir := filepath.Join(s.baseDir, "threads", thread.ThreadID)
-	if err := os.MkdirAll(threadDir, 0755); err != nil {
+	if err := os.MkdirAll(threadDir, 0o755); err != nil {
 		return nil, err
 	}
 
@@ -97,7 +97,7 @@ func (s *ThreadStore) writeThread(path string, thread *model.Thread) error {
 	}
 
 	tmpPath := path + ".tmp"
-	if err := os.WriteFile(tmpPath, data, 0644); err != nil {
+	if err := os.WriteFile(tmpPath, data, 0o644); err != nil {
 		return err
 	}
 

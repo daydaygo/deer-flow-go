@@ -75,11 +75,9 @@ func (m *Manager) dispatchLoop(ctx context.Context) {
 
 		log.Printf("[Manager] received inbound: channel=%s, chat_id=%s, type=%s", msg.ChannelName, msg.ChatID, msg.MsgType)
 
-		m.wg.Add(1)
-		go func() {
-			defer m.wg.Done()
+		m.wg.Go(func() {
 			m.handleMessage(ctx, msg)
-		}()
+		})
 	}
 }
 

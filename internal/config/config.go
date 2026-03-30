@@ -71,8 +71,8 @@ func resolveEnvVars(cfg *Config) {
 }
 
 func resolveEnvVar(value string) string {
-	if strings.HasPrefix(value, "$") {
-		envName := strings.TrimPrefix(value, "$")
+	if after, ok := strings.CutPrefix(value, "$"); ok {
+		envName := after
 		return os.Getenv(envName)
 	}
 	return value

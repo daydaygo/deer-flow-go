@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"maps"
 	"net/http"
 	"time"
 
@@ -69,9 +70,7 @@ func (h *ThreadStateHandler) Get(w http.ResponseWriter, r *http.Request) {
 			next = []string{"agent"}
 		}
 		if latestRun.Output != nil {
-			for k, v := range latestRun.Output {
-				values[k] = v
-			}
+			maps.Copy(values, latestRun.Output)
 		}
 	}
 

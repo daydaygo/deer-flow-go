@@ -18,10 +18,10 @@ func setupSkillsTestEnv(t *testing.T) (*skills.Loader, string) {
 	tmpDir := t.TempDir()
 	skillsDir := filepath.Join(tmpDir, "skills")
 	publicDir := filepath.Join(skillsDir, "public")
-	os.MkdirAll(publicDir, 0755)
+	os.MkdirAll(publicDir, 0o755)
 
 	skillDir := filepath.Join(publicDir, "test-skill")
-	os.MkdirAll(skillDir, 0755)
+	os.MkdirAll(skillDir, 0o755)
 	skillContent := `---
 name: test-skill
 description: Test skill for API
@@ -31,10 +31,10 @@ license: MIT
 
 Test content.
 `
-	os.WriteFile(filepath.Join(skillDir, "SKILL.md"), []byte(skillContent), 0644)
+	os.WriteFile(filepath.Join(skillDir, "SKILL.md"), []byte(skillContent), 0o644)
 
 	configPath := filepath.Join(tmpDir, "extensions_config.json")
-	os.WriteFile(configPath, []byte("{}"), 0644)
+	os.WriteFile(configPath, []byte("{}"), 0o644)
 
 	loader := skills.NewLoader(skillsDir, configPath)
 	if err := loader.Load(); err != nil {

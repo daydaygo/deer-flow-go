@@ -3,6 +3,7 @@ package mcp
 import (
 	"context"
 	"fmt"
+	"maps"
 	"sync"
 )
 
@@ -110,9 +111,7 @@ func (d *ToolDiscovery) GetAllCachedTools() map[string][]Tool {
 	defer d.mu.RUnlock()
 
 	result := make(map[string][]Tool, len(d.cache))
-	for k, v := range d.cache {
-		result[k] = v
-	}
+	maps.Copy(result, d.cache)
 	return result
 }
 

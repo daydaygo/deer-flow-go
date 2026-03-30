@@ -59,9 +59,9 @@ func (p *LocalProvider) Acquire(ctx context.Context, threadID string) (Sandbox, 
 		outputsPath:   filepath.Join(userDataDir, "outputs"),
 	}
 
-	os.MkdirAll(sb.workspacePath, 0755)
-	os.MkdirAll(sb.uploadsPath, 0755)
-	os.MkdirAll(sb.outputsPath, 0755)
+	os.MkdirAll(sb.workspacePath, 0o755)
+	os.MkdirAll(sb.uploadsPath, 0o755)
+	os.MkdirAll(sb.outputsPath, 0o755)
 
 	p.sandboxes[threadID] = sb
 	return sb, nil
@@ -130,8 +130,8 @@ func (s *LocalSandbox) translatePath(virtualPath string) string {
 func (s *LocalSandbox) reverseTranslatePath(physicalPath string) string {
 	physicalPath = filepath.Clean(physicalPath)
 
-	if strings.HasPrefix(physicalPath, s.workspacePath) {
-		rel := strings.TrimPrefix(physicalPath, s.workspacePath)
+	if after, ok := strings.CutPrefix(physicalPath, s.workspacePath); ok {
+		rel := after
 		rel = strings.TrimPrefix(rel, string(filepath.Separator))
 		if rel == "" {
 			return virtualWorkspacePath
@@ -139,8 +139,8 @@ func (s *LocalSandbox) reverseTranslatePath(physicalPath string) string {
 		return virtualWorkspacePath + "/" + rel
 	}
 
-	if strings.HasPrefix(physicalPath, s.uploadsPath) {
-		rel := strings.TrimPrefix(physicalPath, s.uploadsPath)
+	if after, ok := strings.CutPrefix(physicalPath, s.uploadsPath); ok {
+		rel := after
 		rel = strings.TrimPrefix(rel, string(filepath.Separator))
 		if rel == "" {
 			return virtualUploadsPath
@@ -148,8 +148,8 @@ func (s *LocalSandbox) reverseTranslatePath(physicalPath string) string {
 		return virtualUploadsPath + "/" + rel
 	}
 
-	if strings.HasPrefix(physicalPath, s.outputsPath) {
-		rel := strings.TrimPrefix(physicalPath, s.outputsPath)
+	if after, ok := strings.CutPrefix(physicalPath, s.outputsPath); ok {
+		rel := after
 		rel = strings.TrimPrefix(rel, string(filepath.Separator))
 		if rel == "" {
 			return virtualOutputsPath
@@ -157,8 +157,8 @@ func (s *LocalSandbox) reverseTranslatePath(physicalPath string) string {
 		return virtualOutputsPath + "/" + rel
 	}
 
-	if strings.HasPrefix(physicalPath, s.skillsPath) {
-		rel := strings.TrimPrefix(physicalPath, s.skillsPath)
+	if after, ok := strings.CutPrefix(physicalPath, s.skillsPath); ok {
+		rel := after
 		rel = strings.TrimPrefix(rel, string(filepath.Separator))
 		if rel == "" {
 			return virtualSkillsPath
@@ -302,10 +302,10 @@ func (s *LocalSandbox) WriteFile(ctx context.Context, path, content string) erro
 
 	physicalPath := s.translatePath(path)
 	dir := filepath.Dir(physicalPath)
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
-	return os.WriteFile(physicalPath, []byte(content), 0644)
+	return os.WriteFile(physicalPath, []byte(content), 0o644)
 }
 
 func (s *LocalSandbox) WriteFileAppend(ctx context.Context, path, content string) error {
@@ -315,11 +315,11 @@ func (s *LocalSandbox) WriteFileAppend(ctx context.Context, path, content string
 
 	physicalPath := s.translatePath(path)
 	dir := filepath.Dir(physicalPath)
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
 
-	f, err := os.OpenFile(physicalPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(physicalPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 	if err != nil {
 		return err
 	}
@@ -417,8 +417,8 @@ func shouldIgnore(name string) bool {
 		if name == pattern {
 			return true
 		}
-		if strings.HasSuffix(pattern, "*") {
-			prefix := strings.TrimSuffix(pattern, "*")
+		if before, ok := strings.CutSuffix(pattern, "*"); ok {
+			prefix := before
 			if strings.HasPrefix(name, prefix) {
 				return true
 			}

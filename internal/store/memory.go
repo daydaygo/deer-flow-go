@@ -76,7 +76,7 @@ func (s *MemoryStore) Save(mem *UserMemory) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if err := os.MkdirAll(filepath.Dir(s.storagePath), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(s.storagePath), 0o755); err != nil {
 		return err
 	}
 
@@ -86,7 +86,7 @@ func (s *MemoryStore) Save(mem *UserMemory) error {
 	}
 
 	tmpPath := s.storagePath + ".tmp"
-	if err := os.WriteFile(tmpPath, data, 0644); err != nil {
+	if err := os.WriteFile(tmpPath, data, 0o644); err != nil {
 		return err
 	}
 

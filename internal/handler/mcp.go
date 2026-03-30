@@ -67,7 +67,7 @@ func (s *MCPConfigStore) Save(cfg *mcp.MCPConfig) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if err := os.MkdirAll(filepath.Dir(s.configPath), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(s.configPath), 0o755); err != nil {
 		return err
 	}
 
@@ -77,7 +77,7 @@ func (s *MCPConfigStore) Save(cfg *mcp.MCPConfig) error {
 	}
 
 	tmpPath := s.configPath + ".tmp"
-	if err := os.WriteFile(tmpPath, data, 0644); err != nil {
+	if err := os.WriteFile(tmpPath, data, 0o644); err != nil {
 		return err
 	}
 
@@ -196,9 +196,9 @@ func (h *MCPHandler) CallTool(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var args map[string]interface{}
+	var args map[string]any
 	if err := json.NewDecoder(r.Body).Decode(&args); err != nil {
-		args = make(map[string]interface{})
+		args = make(map[string]any)
 	}
 
 	client := h.manager.GetClient(serverName)

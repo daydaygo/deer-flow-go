@@ -50,7 +50,7 @@ func (s *ChannelStore) save() {
 	if s.path == "" {
 		return
 	}
-	if err := os.MkdirAll(filepath.Dir(s.path), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Dir(s.path), 0o755); err != nil {
 		return
 	}
 	data, err := json.MarshalIndent(s.data, "", "  ")
@@ -58,7 +58,7 @@ func (s *ChannelStore) save() {
 		return
 	}
 	tmpPath := s.path + ".tmp"
-	if err := os.WriteFile(tmpPath, data, 0644); err != nil {
+	if err := os.WriteFile(tmpPath, data, 0o644); err != nil {
 		return
 	}
 	os.Rename(tmpPath, s.path)

@@ -2,6 +2,7 @@ package sandbox
 
 import (
 	"context"
+	"slices"
 	"strings"
 )
 
@@ -46,10 +47,5 @@ func IsSkillsPath(path string) bool {
 }
 
 func HasPathTraversal(path string) bool {
-	for _, part := range strings.Split(path, "/") {
-		if part == ".." {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(strings.Split(path, "/"), "..")
 }

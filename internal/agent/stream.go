@@ -27,7 +27,7 @@ func NewSSEWriter(w http.ResponseWriter) *SSEWriter {
 	}
 }
 
-func (s *SSEWriter) WriteEvent(event string, data interface{}) error {
+func (s *SSEWriter) WriteEvent(event string, data any) error {
 	dataBytes, err := json.Marshal(data)
 	if err != nil {
 		return fmt.Errorf("failed to marshal data: %w", err)

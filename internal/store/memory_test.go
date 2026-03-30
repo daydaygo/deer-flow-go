@@ -42,7 +42,7 @@ func TestMemoryStore_Load_ExistingFile(t *testing.T) {
 	if err != nil {
 		t.Fatalf("json.MarshalIndent() error = %v", err)
 	}
-	if err := os.WriteFile(storagePath, data, 0644); err != nil {
+	if err := os.WriteFile(storagePath, data, 0o644); err != nil {
 		t.Fatalf("os.WriteFile() error = %v", err)
 	}
 
@@ -74,7 +74,7 @@ func TestMemoryStore_Load_Cached(t *testing.T) {
 		WorkContext: "cached context",
 	}
 	data, _ := json.MarshalIndent(existingMem, "", "  ")
-	os.WriteFile(storagePath, data, 0644)
+	os.WriteFile(storagePath, data, 0o644)
 
 	store := NewMemoryStore(storagePath)
 
@@ -85,7 +85,7 @@ func TestMemoryStore_Load_Cached(t *testing.T) {
 
 	newData := &UserMemory{WorkContext: "modified"}
 	data2, _ := json.MarshalIndent(newData, "", "  ")
-	os.WriteFile(storagePath, data2, 0644)
+	os.WriteFile(storagePath, data2, 0o644)
 
 	mem2, err := store.Load()
 	if err != nil {
@@ -170,7 +170,7 @@ func TestMemoryStore_Reload(t *testing.T) {
 
 	initialMem := &UserMemory{WorkContext: "initial"}
 	data, _ := json.MarshalIndent(initialMem, "", "  ")
-	os.WriteFile(storagePath, data, 0644)
+	os.WriteFile(storagePath, data, 0o644)
 
 	store := NewMemoryStore(storagePath)
 
@@ -184,7 +184,7 @@ func TestMemoryStore_Reload(t *testing.T) {
 
 	modifiedMem := &UserMemory{WorkContext: "modified"}
 	data2, _ := json.MarshalIndent(modifiedMem, "", "  ")
-	os.WriteFile(storagePath, data2, 0644)
+	os.WriteFile(storagePath, data2, 0o644)
 
 	mem2, err := store.Reload()
 	if err != nil {

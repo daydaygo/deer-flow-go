@@ -4,10 +4,12 @@ import (
 	"github.com/user/deer-flow-go/internal/llm/types"
 )
 
-type GenerateOption = types.GenerateOption
-type GenerateOptions = types.GenerateOptions
-type StreamEvent = types.StreamEvent
-type Provider = types.Provider
+type (
+	GenerateOption  = types.GenerateOption
+	GenerateOptions = types.GenerateOptions
+	StreamEvent     = types.StreamEvent
+	Provider        = types.Provider
+)
 
 var (
 	WithTemperature   = types.WithTemperature

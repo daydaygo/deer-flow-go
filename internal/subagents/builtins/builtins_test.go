@@ -1,6 +1,7 @@
 package builtins
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/user/deer-flow-go/internal/subagentstypes"
@@ -34,10 +35,8 @@ func TestGeneralPurposeSubagent(t *testing.T) {
 		t.Errorf("expected positive timeout, got %d", s.TimeoutSeconds)
 	}
 
-	for _, tool := range s.DisallowedTools {
-		if tool == "task" {
-			return
-		}
+	if slices.Contains(s.DisallowedTools, "task") {
+		return
 	}
 	t.Error("expected 'task' to be in disallowed tools to prevent recursion")
 }
@@ -70,10 +69,8 @@ func TestBashSubagent(t *testing.T) {
 		t.Errorf("expected positive timeout, got %d", s.TimeoutSeconds)
 	}
 
-	for _, tool := range s.DisallowedTools {
-		if tool == "task" {
-			return
-		}
+	if slices.Contains(s.DisallowedTools, "task") {
+		return
 	}
 	t.Error("expected 'task' to be in disallowed tools to prevent recursion")
 }
@@ -83,13 +80,7 @@ func TestBashSubagent_Tools(t *testing.T) {
 
 	expectedTools := []string{"bash", "ls", "read_file", "write_file", "str_replace"}
 	for _, expected := range expectedTools {
-		found := false
-		for _, tool := range s.Tools {
-			if tool == expected {
-				found = true
-				break
-			}
-		}
+		found := slices.Contains(s.Tools, expected)
 		if !found {
 			t.Errorf("expected tool '%s' in bash subagent", expected)
 		}

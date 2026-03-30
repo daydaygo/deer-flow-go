@@ -14,11 +14,11 @@ func setupTestSkillsDir(t *testing.T) (string, string) {
 	publicDir := filepath.Join(skillsDir, "public")
 	customDir := filepath.Join(skillsDir, "custom")
 
-	os.MkdirAll(publicDir, 0755)
-	os.MkdirAll(customDir, 0755)
+	os.MkdirAll(publicDir, 0o755)
+	os.MkdirAll(customDir, 0o755)
 
 	skill1Dir := filepath.Join(publicDir, "skill-one")
-	os.MkdirAll(skill1Dir, 0755)
+	os.MkdirAll(skill1Dir, 0o755)
 	skill1Content := `---
 name: skill-one
 description: First test skill
@@ -31,10 +31,10 @@ allowed-tools:
 
 This is skill one content.
 `
-	os.WriteFile(filepath.Join(skill1Dir, "SKILL.md"), []byte(skill1Content), 0644)
+	os.WriteFile(filepath.Join(skill1Dir, "SKILL.md"), []byte(skill1Content), 0o644)
 
 	skill2Dir := filepath.Join(customDir, "skill-two")
-	os.MkdirAll(skill2Dir, 0755)
+	os.MkdirAll(skill2Dir, 0o755)
 	skill2Content := `---
 name: skill-two
 description: Second test skill
@@ -43,7 +43,7 @@ description: Second test skill
 
 This is skill two content.
 `
-	os.WriteFile(filepath.Join(skill2Dir, "SKILL.md"), []byte(skill2Content), 0644)
+	os.WriteFile(filepath.Join(skill2Dir, "SKILL.md"), []byte(skill2Content), 0o644)
 
 	configPath := filepath.Join(tmpDir, "extensions_config.json")
 	configContent := `{
@@ -51,7 +51,7 @@ This is skill two content.
     "skill-one": { "enabled": true }
   }
 }`
-	os.WriteFile(configPath, []byte(configContent), 0644)
+	os.WriteFile(configPath, []byte(configContent), 0o644)
 
 	return skillsDir, configPath
 }
@@ -140,7 +140,7 @@ func TestLoader_SetEnabled_NotFound(t *testing.T) {
 func TestLoader_NoConfigFile(t *testing.T) {
 	tmpDir := t.TempDir()
 	skillsDir := filepath.Join(tmpDir, "skills")
-	os.MkdirAll(filepath.Join(skillsDir, "public"), 0755)
+	os.MkdirAll(filepath.Join(skillsDir, "public"), 0o755)
 
 	configPath := filepath.Join(tmpDir, "extensions_config.json")
 

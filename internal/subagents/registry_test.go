@@ -100,7 +100,7 @@ func TestRegistry_Concurrency(t *testing.T) {
 	r := NewRegistry()
 	done := make(chan bool)
 
-	for i := 0; i < 100; i++ {
+	for i := range 100 {
 		go func(id int) {
 			name := "agent-" + string(rune(id))
 			r.Register(&Subagent{Name: name})
@@ -110,7 +110,7 @@ func TestRegistry_Concurrency(t *testing.T) {
 		}(i)
 	}
 
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		<-done
 	}
 }

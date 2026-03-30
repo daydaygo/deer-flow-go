@@ -23,7 +23,7 @@ func TestMemoryHandler_Get(t *testing.T) {
 		},
 	}
 	data, _ := json.MarshalIndent(initialMem, "", "  ")
-	os.WriteFile(storagePath, data, 0644)
+	os.WriteFile(storagePath, data, 0o644)
 
 	memoryStore := store.NewMemoryStore(storagePath)
 	handler := NewMemoryHandler(memoryStore)
@@ -91,7 +91,7 @@ func TestMemoryHandler_Reload(t *testing.T) {
 		WorkContext: "initial context",
 	}
 	data, _ := json.MarshalIndent(initialMem, "", "  ")
-	os.WriteFile(storagePath, data, 0644)
+	os.WriteFile(storagePath, data, 0o644)
 
 	memoryStore := store.NewMemoryStore(storagePath)
 	handler := NewMemoryHandler(memoryStore)
@@ -110,7 +110,7 @@ func TestMemoryHandler_Reload(t *testing.T) {
 		WorkContext: "modified context",
 	}
 	data2, _ := json.MarshalIndent(modifiedMem, "", "  ")
-	os.WriteFile(storagePath, data2, 0644)
+	os.WriteFile(storagePath, data2, 0o644)
 
 	req2 := httptest.NewRequest(http.MethodPost, "/api/memory/reload", nil)
 	rec2 := httptest.NewRecorder()

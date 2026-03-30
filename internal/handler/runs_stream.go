@@ -56,7 +56,7 @@ func (h *RunsStreamHandler) Stream(w http.ResponseWriter, r *http.Request) {
 
 	inputMessage := extractInputMessage(req.Input)
 
-	initialValues := map[string]interface{}{
+	initialValues := map[string]any{
 		"messages": []model.Message{},
 	}
 	if err := sse.WriteEvent("values", initialValues); err != nil {
@@ -72,7 +72,7 @@ func (h *RunsStreamHandler) Stream(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	messagesTuple := map[string]interface{}{
+	messagesTuple := map[string]any{
 		"message": response,
 	}
 	if err := sse.WriteEvent("messages-tuple", messagesTuple); err != nil {
@@ -98,8 +98,8 @@ func extractInputMessage(input map[string]any) string {
 		return msg
 	}
 
-	if messages, ok := input["messages"].([]interface{}); ok && len(messages) > 0 {
-		if lastMsg, ok := messages[len(messages)-1].(map[string]interface{}); ok {
+	if messages, ok := input["messages"].([]any); ok && len(messages) > 0 {
+		if lastMsg, ok := messages[len(messages)-1].(map[string]any); ok {
 			if content, ok := lastMsg["content"].(string); ok {
 				return content
 			}

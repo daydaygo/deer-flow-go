@@ -43,7 +43,7 @@ func (s *RunStore) Create(threadID, assistantID string, input map[string]any) (*
 
 	threadDir := filepath.Join(s.baseDir, "threads", threadID)
 	runsDir := filepath.Join(threadDir, "runs")
-	if err := os.MkdirAll(runsDir, 0755); err != nil {
+	if err := os.MkdirAll(runsDir, 0o755); err != nil {
 		return nil, err
 	}
 
@@ -150,7 +150,7 @@ func (s *RunStore) writeRun(path string, run *model.Run) error {
 	}
 
 	tmpPath := path + ".tmp"
-	if err := os.WriteFile(tmpPath, data, 0644); err != nil {
+	if err := os.WriteFile(tmpPath, data, 0o644); err != nil {
 		return err
 	}
 

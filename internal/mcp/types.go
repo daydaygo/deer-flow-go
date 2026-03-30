@@ -15,9 +15,9 @@ type MCPConfig struct {
 }
 
 type Tool struct {
-	Name        string      `json:"name"`
-	Description string      `json:"description"`
-	InputSchema interface{} `json:"inputSchema"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	InputSchema any    `json:"inputSchema"`
 }
 
 type ToolCallResult struct {

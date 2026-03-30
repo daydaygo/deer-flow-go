@@ -268,10 +268,10 @@ func TestToolJSON(t *testing.T) {
 	tool := Tool{
 		Name:        "test_tool",
 		Description: "A test tool",
-		InputSchema: map[string]interface{}{
+		InputSchema: map[string]any{
 			"type": "object",
-			"properties": map[string]interface{}{
-				"param1": map[string]interface{}{
+			"properties": map[string]any{
+				"param1": map[string]any{
 					"type":        "string",
 					"description": "First parameter",
 				},

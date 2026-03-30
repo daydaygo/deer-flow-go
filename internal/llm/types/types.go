@@ -46,7 +46,7 @@ func ApplyOptions(opts ...GenerateOption) *GenerateOptions {
 type StreamEvent struct {
 	Type    string
 	Content string
-	Data    interface{}
+	Data    any
 }
 
 type Provider interface {

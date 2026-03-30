@@ -11,7 +11,7 @@ import (
 func TestLocalSandbox_PathTranslation(t *testing.T) {
 	tmpDir := t.TempDir()
 	skillsPath := filepath.Join(tmpDir, "skills")
-	os.MkdirAll(skillsPath, 0755)
+	os.MkdirAll(skillsPath, 0o755)
 
 	threadID := "test-thread-123"
 	dataDir := filepath.Join(tmpDir, "data")
@@ -303,8 +303,8 @@ func TestLocalSandbox_PathTraversalRejection(t *testing.T) {
 func TestLocalSandbox_SkillsPathReadOnly(t *testing.T) {
 	tmpDir := t.TempDir()
 	skillsPath := filepath.Join(tmpDir, "skills")
-	os.MkdirAll(filepath.Join(skillsPath, "public"), 0755)
-	os.WriteFile(filepath.Join(skillsPath, "public", "SKILL.md"), []byte("skill content"), 0644)
+	os.MkdirAll(filepath.Join(skillsPath, "public"), 0o755)
+	os.WriteFile(filepath.Join(skillsPath, "public", "SKILL.md"), []byte("skill content"), 0o644)
 
 	threadID := "test-thread-123"
 	cfg := &LocalConfig{

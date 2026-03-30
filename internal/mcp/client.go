@@ -137,7 +137,7 @@ func (c *Client) ListTools(ctx context.Context) ([]Tool, error) {
 	return tools, nil
 }
 
-func (c *Client) CallTool(ctx context.Context, name string, args map[string]interface{}) (*ToolCallResult, error) {
+func (c *Client) CallTool(ctx context.Context, name string, args map[string]any) (*ToolCallResult, error) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 

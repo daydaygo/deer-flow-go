@@ -175,7 +175,7 @@ func (l *Loader) saveExtensionsConfig() error {
 		return fmt.Errorf("failed to marshal extensions config: %w", err)
 	}
 
-	if err := os.WriteFile(l.configPath, data, 0644); err != nil {
+	if err := os.WriteFile(l.configPath, data, 0o644); err != nil {
 		return fmt.Errorf("failed to write extensions config: %w", err)
 	}
 

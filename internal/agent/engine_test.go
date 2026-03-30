@@ -133,7 +133,7 @@ func TestStateManager_Concurrency(t *testing.T) {
 	sm := NewStateManager()
 	done := make(chan bool)
 
-	for i := 0; i < 100; i++ {
+	for i := range 100 {
 		go func(id int) {
 			threadID := "thread-" + string(rune(id))
 			sm.GetOrCreate(threadID)
@@ -143,7 +143,7 @@ func TestStateManager_Concurrency(t *testing.T) {
 		}(i)
 	}
 
-	for i := 0; i < 100; i++ {
+	for range 100 {
 		<-done
 	}
 }
